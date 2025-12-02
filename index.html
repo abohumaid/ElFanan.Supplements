@@ -37,7 +37,7 @@
             font-size: 2.2rem;
             font-weight: 700;
             letter-spacing: 2px;
-            color: #5a4e7c;
+            color: #bfa14a;
             display: flex;
             align-items: center;
             padding: 10px;
@@ -58,7 +58,7 @@
             padding: 0 5px 2px 5px;
         }
         .navbar li:hover, .navbar li.active {
-            color: #af0ba7;
+            color: #bfa14a;
         }
         .navbar li::after {
             content: '';
@@ -73,7 +73,7 @@
         }
         .navbar li.active::after,
         .navbar li:hover::after {
-            background: #eec9d2;
+            background: #bfa14a33;
             width: 32px;
         }
         #searchBarContainer {
@@ -85,16 +85,16 @@
         }
         #searchInput {
             background: #fff;
-            color: #5a4e7c;
-            border: 1.5px solid #eec9d2;
-            box-shadow: 0 2px 8px #eec9d2;
+            color: #bfa14a;
+            border: 1.5px solid #bfa14a;
+            box-shadow: 0 2px 8px #bfa14a33;
             transition: box-shadow 0.2s, border 0.2s;
             margin-left: 10px;
         }
         #searchInput:focus {
             outline: none;
-            border: 1.5px solid #b9b4e7;
-            box-shadow: 0 0 0 2px #b9b4e733;
+            border: 1.5px solid #bfa14a;
+            box-shadow: 0 0 0 2px #bfa14a33;
         }
         .container {
             max-width: 1100px;
@@ -103,7 +103,7 @@
             background: #fff;
             border-radius: 12px;
             box-shadow: 0 4px 24px #e0e0e0;
-            border: 1px solid #eec9d2;
+            border: 1px solid #bfa14a33;
         }
         .admin-login-modal {
             position: fixed;
@@ -124,7 +124,7 @@
         }
         .admin-login-box h2 {
             margin-bottom: 18px;
-            color: #5a4e7c;
+            color: #bfa14a;
             font-size: 2rem;
         }
         .admin-login-box input {
@@ -136,8 +136,8 @@
             font-size: 1.1rem;
         }
         .admin-login-box button {
-            background: #eec9d2;
-            color: #fff;
+            background: #c9b037;
+            color: #222;
             border: none;
             padding: 10px 30px;
             border-radius: 6px;
@@ -155,11 +155,11 @@
             text-align: right;
         }
         .admin-panel h2 {
-            color: #5a4e7c;
+            color: #bfa14a;
             margin-bottom: 18px;
         }
         .add-product-btn {
-            background: #eec9d2 !important;
+            background: #bfa14a !important;
             color: #fff !important;
             border: none;
             padding: 10px 24px;
@@ -195,8 +195,8 @@
             color: #222;
         }
         .product-form button {
-            background: #eec9d2;
-            color: #fff;
+            background: #c9b037;
+            color: #222;
             border: none;
             padding: 10px 24px;
             border-radius: 6px;
@@ -270,7 +270,7 @@
         }
         .product-actions button {
             background: none;
-            color: #b45d8c;
+            color: #c9b037;
             border: none;
             border-radius: 5px;
             padding: 4px 6px;
@@ -282,7 +282,7 @@
         }
         .product-actions button:hover {
             color: #fff;
-            background: #b45d8c;
+            background: #c9b037;
         }
         .section-title {
             font-size: 2rem;
@@ -375,13 +375,13 @@
             transform: translateY(0);
         }
         #cartBtn svg circle {
-            fill: #ec35e3 !important;
+            fill: #c9b037 !important;
         }
         #cartBtn svg path {
-            fill: #eec9d2 !important;
+            fill: #bfa14a !important;
         }
         #favoritesBtn svg path {
-            fill: #eec9d2 !important;
+            fill: #c9b037 !important;
         }
         /* إخفاء زر الأدمن في الناب بار تمامًا */
         li#adminBtn[data-section="admin"] {
@@ -402,13 +402,13 @@
         }
         .add-to-cart-btn {
             margin-top: 2px !important;
-            background: #b9b4e7 !important;
-            color: #fff !important;
+            background: #c9b037 !important;
+            color: #222 !important;
             border: none;
         }
         .add-to-cart-btn:hover {
-            background: #eec9d2 !important;
-            color: #7c4e58 !important;
+            background: #bfa14a !important;
+            color: #fff !important;
         }
         .add-product-btn, .order-status-select {
             background: #e6b400 !important;
@@ -421,12 +421,12 @@
         }
         /* حدود القلب بنفسجي داكن */
         #favoritesBtn svg path {
-            stroke: #5a4e7c !important;
+            stroke: #bfa14a !important;
         }
         /* رقم المفضلات فوق القلب أبيض بخلفية بنفسجي فاتح */
         #favoritesCount {
-            background: #b9b4e7 !important;
-            color: #fff !important;
+            background: #c9b037 !important;
+            color: #222 !important;
         }
          @keyframes marquee {
             0% { transform: translateX(100%); }
@@ -530,8 +530,8 @@
             resize: vertical;
         }
         .order-form-modern button[type="submit"] {
-            background: linear-gradient(90deg, #a1589e 0%, #eec9d2 100%);
-            color: #fff;
+            background: linear-gradient(90deg, #bfa14a 0%, #c9b037 100%);
+            color: #222;
             font-weight: bold;
             padding: 14px 0;
             border-radius: 10px;
@@ -543,7 +543,7 @@
             transition: background 0.2s, color 0.2s;
         }
         .order-form-modern button[type="submit"]:hover {
-            background: linear-gradient(90deg, #eec9d2 0%, #a1589e 100%);
+            background: linear-gradient(90deg, #c9b037 0%, #bfa14a 100%);
             color: #fff;
         }
         .order-form-modern .error-msg {
@@ -1396,7 +1396,7 @@
         const whatsappBtn = document.getElementById('whatsappBtn');
         if (whatsappBtn) {
             whatsappBtn.onclick = function() {
-                window.open('https://wa.me/201159768514', '_blank');
+                window.open('https://wa.me/201121366757', '_blank');
             };
         }
     </script>
