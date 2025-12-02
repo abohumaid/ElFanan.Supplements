@@ -421,12 +421,12 @@
         }
         /* حدود القلب بنفسجي داكن */
         #favoritesBtn svg path {
-            stroke: #bfa14a !important;
+            stroke: rgb(100, 68, 109) !important;
         }
         /* رقم المفضلات فوق القلب أبيض بخلفية بنفسجي فاتح */
         #favoritesCount {
-            background: #c9b037 !important;
-            color: #222 !important;
+            background: #ff4444 !important;
+            color: #fff !important;
         }
          @keyframes marquee {
             0% { transform: translateX(100%); }
@@ -652,7 +652,7 @@
             </div>
             <div style="width:100%;display:flex;justify-content:center;align-items:center;margin:8px 0 0 0;gap:12px;">
                 <div id="searchBarContainer" style="display:flex;justify-content:center;align-items:center;gap:12px;margin:0;">
-                    <input  id="searchInput" type="text" placeholder=" Search for Perfume..🔍" 
+                    <input  id="searchInput" type="text" placeholder=" Search ...🔍" 
                         style="width:60%;max-width:400px;padding:10px 16px;font-size:1.2rem;border-radius:8px;"/>
                     <button id="favoritesBtn" style="position:relative;background:none;border:none;cursor:pointer;outline:none;display:flex;align-items:center;margin-right:0px;">
                         <svg id="favoritesIcon" width="36" height="36" viewBox="0 0 24 24" fill="none">
@@ -925,7 +925,7 @@
                         <div class='product-desc'>${prod.desc}</div>
                         <div class='product-type'>${type ? type.label : ''}</div>
                         <div class='product-prices'>
-                            <del>${prod.priceBefore} L.E</del> <span>${prod.priceAfter} L.E</span>
+                            <del>${prod.priceBefore} ج.م</del> <span>${prod.priceAfter} ج.م</span>
                         </div>
                         ${(prod.available === false) ? '' : `<button class='add-to-cart-btn' onclick='addToCart(${JSON.stringify(prod)})' style='background:#25d366;color:#fff;font-weight:bold;padding:8px 0;border-radius:6px;width:100%;margin-top:8px;font-size:1.1rem;cursor:pointer;border:none;'>إضافة إلى السلة</button>`}
                     </div>
@@ -1290,7 +1290,7 @@
                     <div class='product-info'>
                         <div class='product-title'>${prod.name}</div>
                         <div class='product-desc'>${prod.desc}</div>
-                        <div class='product-prices'><del>${prod.priceBefore} L.E</del> <span>${prod.priceAfter} L.E</span></div>
+                        <div class='product-prices'><del>${prod.priceBefore} ج.م</del> <span>${prod.priceAfter} ج.م</span></div>
                         <div class='product-actions'>
                             <button title='تعديل المنتج' onclick='editProduct(${i})'>
                                 <svg width='22' height='22' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 21H20' stroke='#ffb300' stroke-width='2'/><path d='M18.5 2.5C18.8978 2.10218 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10218 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10218 21.5 5.5L7 20L2 21L3 16L18.5 2.5Z' stroke='#ffb300' stroke-width='2'/></svg>
@@ -1476,7 +1476,7 @@
                         <div class='product-title'>${item.name}</div>
                         <div class='product-desc'>${item.desc}</div>
                         <div class='product-type'>${item.type}</div>
-                        <div class='product-prices'><span>${item.priceAfter} L.E</span></div>
+                        <div class='product-prices'><span>${item.priceAfter} ج.م</span></div>
                     </div>
                     <div style='display:flex;flex-direction:column;align-items:center;gap:6px;'>
                         <button onclick='changeCartQty(${i},1)' style='background:#85f170;color:#ecf1eb;border:none;border-radius:50%;width:32px;height:32px;font-size:1.3rem;font-weight:bold;cursor:pointer;'>+</button>
@@ -1488,7 +1488,7 @@
             html += `</div>`;
             // إجمالي السعر
             let total = cart.reduce((sum, item) => sum + (parseFloat(item.priceAfter) * (item.qty || 1)), 0);
-            html += `<div style='text-align:center;font-size:1.3rem;margin:18px 0;color:#ff2a04;'>L.E ${total}  <span style='color:#000000;;font-weight:bold;'> : إجمالي السعر </span></div>`;
+            html += `<div style='text-align:center;font-size:1.3rem;margin:18px 0;color:#ff2a04;'>ج.م ${total}  <span style='color:#000000;;font-weight:bold;'> : إجمالي السعر </span></div>`;
             html += `<div style='text-align:center;'><button onclick='showOrderForm()' class='btn-modern'>تأكيد الطلب</button></div>`;
             container.innerHTML = html;
         }
@@ -1529,6 +1529,7 @@
                     <div id='orderTotalBox'></div>
                     <button type='submit'>تأكيد نهائي للطلب</button>
                 </form>
+                <br>
                 <div id='giftSection'></div>`;
             container.innerHTML = html;
             // تحقق مباشر عند الكتابة
@@ -1560,7 +1561,8 @@
                     title.style.marginBottom = '8px';
                     title.style.fontWeight = 'bold';
                     title.style.color = '#a1589e';
-                    title.textContent = 'اختر هديتك (عند الشراء بـ 1000 جنيه أو أكثر):';
+                    title.style.textAlign = 'center';
+                    title.textContent ='اختر هديتك ( عند الشراء بـ 1000 جنيه أو أكثر )';
                     giftSection.appendChild(title);
                     const row = document.createElement('div');
                     row.className = 'gift-row';
@@ -1619,7 +1621,7 @@
                 let afterDiscount = Math.max(0, total - discountValue);
                 orderTotalBox.innerHTML = discountValue > 0
                     ? `الإجمالي بعد الخصم: <span style='color:#25d366;'>${afterDiscount} </span> <del style='color:#ff4444;font-size:1rem;margin-right:8px;'>${total} </del>`
-                    : ` L.E إجمالي السعر: <span style='color:#ff2a04;'>${total}</span>`;
+                    : ` ج.م إجمالي السعر: <span style='color:#ff2a04;'>${total}</span>`;
                 renderGiftSection(afterDiscount);
             }
             updateOrderTotal();
@@ -1720,7 +1722,7 @@
             html += `<div style='margin-bottom:10px;'><b>الاسم:</b> ${order.name}</div>`;
             html += `<div style='margin-bottom:10px;'><b>رقم الواتساب:</b> ${order.whatsapp}</div>`;
             html += `<div style='margin-bottom:10px;'><b>العنوان:</b> ${order.address}</div>`;
-            html += `<div style='margin-bottom:10px;'><b>الإجمالي:</b> <span style='color:#ff2a04;'>${order.total} L.E</span></div>`;
+            html += `<div style='margin-bottom:10px;'><b>الإجمالي:</b> <span style='color:#ff2a04;'>${order.total} ج.م</span></div>`;
             html += `<div style='margin-top:18px;text-align:center;'><button onclick='renderProductsSection("man")' style='background:#a1589e;color:#ffffff;font-weight:bold;padding:10px 24px;border-radius:8px;font-size:1.1rem;cursor:pointer;border:none;'>العودة للمنتجات</button></div>`;
             html += `</div>`;
             container.innerHTML = html;
@@ -1795,7 +1797,7 @@
                             <td style='padding:8px 6px;'>${order.address}</td>
                             <td style='padding:8px 6px;'>${productsHtml}</td>
                             <td style='padding:8px 6px;'>${order.discountCode ? `${order.discountCode} ${order.discountValue ? `(${order.discountValue} جنيه)` : ''}` : ''}</td>
-                            <td style='padding:8px 6px;color:#ffb300;font-weight:bold;'>${order.total} L.E</td>
+                            <td style='padding:8px 6px;color:#ffb300;font-weight:bold;'>${order.total} ج.م</td>
                             <td style='padding:8px 6px;text-align:center;'>${order.gift ? `<img src='${order.gift}' style='width:38px;height:38px;object-fit:cover;border-radius:5px;border:1px solid #b9b4e7;' alt='هدية'>` : '-'}</td>
                             <td style='padding:8px 6px;'>${order.time || ''}</td>
                             <td style='padding:8px 6px;'>
@@ -1888,7 +1890,7 @@
                         <div class='product-desc'>${prod.desc}</div>
                         <div class='product-type'>${prod.type}</div>
                         <div class='product-prices'>
-                            <del>${prod.priceBefore} L.E</del> <span>${prod.priceAfter} L.E</span>
+                            <del>${prod.priceBefore} ج.م</del> <span>${prod.priceAfter} ج.م</span>
                         </div>
                         ${(prod.available === false) ? '' : `<button class='add-to-cart-btn' onclick='addToCart(${JSON.stringify(prod)})' style='background:#25d366;color:#fff;font-weight:bold;padding:8px 0;border-radius:6px;width:100%;margin-top:8px;font-size:1.1rem;cursor:pointer;border:none;'>إضافة إلى السلة</button>`}
                     </div>
