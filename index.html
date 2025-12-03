@@ -1516,6 +1516,12 @@
                         <label for='whatsappInput'>رقم الواتساب</label>
                         <div id='whatsappError' class='error-msg' style='display:none;'></div>
                     </div>
+                    <div class='form-group' style='position:relative;'>
+                        <input type='text' name='governorate' id='governorateInput' placeholder=' ' required autocomplete='off' style='width:95%;padding:18px 12px 10px 12px;border:1.5px solid #eec9d2;border-radius:8px;font-size:1.15rem;background:#faf9f6;color:#5a4e7c;outline:none;transition:border 0.2s,box-shadow 0.2s;box-shadow:0 2px 8px #eec9d2;' />
+                        <label for='governorateInput'>المحافظة</label>
+                        <div id='governorateError' class='error-msg' style='display:none;'></div>
+                        <ul id='governorateList' style='position:absolute;top:100%;right:0;left:0;z-index:10;background:#fff;border:1px solid #eec9d2;border-radius:8px;max-height:180px;overflow-y:auto;box-shadow:0 2px 8px #eec9d2;display:none;margin:2px 0 0 0;padding:0;list-style:none;'></ul>
+                    </div>
                     <div class='form-group'>
                         <textarea name='address' id='orderAddress' placeholder=' ' required></textarea>
                         <label for='orderAddress'>العنوان بالتفصيل</label>
@@ -1542,6 +1548,38 @@
                     whatsappError.style.display = 'none';
                 }
             });
+            // تحقق المحافظة
+            const governorateInput = document.getElementById('governorateInput');
+            const governorateError = document.getElementById('governorateError');
+            const governorateList = document.getElementById('governorateList');
+            // قائمة المحافظات
+            const governorates = [
+                'القاهرة','الجيزة','الإسكندرية','الدقهلية','البحيرة','الشرقية','الغربية','المنوفية','القليوبية','كفر الشيخ','الفيوم','بني سويف','المنيا','أسيوط','سوهاج','قنا','الأقصر','أسوان','دمياط','بورسعيد','الإسماعيلية','السويس','مطروح','شمال سيناء','جنوب سيناء','الوادي الجديد','البحر الأحمر'
+            ];
+            // إظهار القائمة عند الكتابة
+            governorateInput.addEventListener('input', function() {
+                const val = this.value.trim();
+                let filtered = governorates.filter(g => g.includes(val));
+                if (!val) filtered = governorates;
+                if (filtered.length) {
+                    governorateList.innerHTML = filtered.map(g => `<li style='padding:8px 12px;cursor:pointer;' data-gov='${g}'>${g}</li>`).join('');
+                    governorateList.style.display = 'block';
+                } else {
+                    governorateList.style.display = 'none';
+                }
+            });
+            // اختيار المحافظة من القائمة
+            governorateList.addEventListener('mousedown', function(e) {
+                if (e.target.tagName === 'LI') {
+                    governorateInput.value = e.target.getAttribute('data-gov');
+                    governorateList.style.display = 'none';
+                    updateOrderTotal();
+                }
+            });
+            // إخفاء القائمة عند فقدان التركيز
+            governorateInput.addEventListener('blur', function() {
+                setTimeout(() => { governorateList.style.display = 'none'; }, 150);
+            });
             // --- كود الخصم ---
             let discountValue = 0;
             let discountCodeUsed = '';
@@ -1549,6 +1587,9 @@
             const discountCodeMsg = document.getElementById('discountCodeMsg');
             const discountCodeError = document.getElementById('discountCodeError');
             const orderTotalBox = document.getElementById('orderTotalBox');
+            // الشحن حسب المحافظة
+            let shippingValue = 0;
+            let shippingText = '';
             // --- جزء الهدايا ---
             let selectedGift = '';
             function renderGiftSection(total) {
@@ -1619,12 +1660,41 @@
             function updateOrderTotal() {
                 let total = cart.reduce((sum, item) => sum + (parseFloat(item.priceAfter) * (item.qty || 1)), 0);
                 let afterDiscount = Math.max(0, total - discountValue);
-                orderTotalBox.innerHTML = discountValue > 0
-                    ? `الإجمالي بعد الخصم: <span style='color:#25d366;'>${afterDiscount} </span> <del style='color:#ff4444;font-size:1rem;margin-right:8px;'>${total} </del>`
-                    : ` ج.م إجمالي السعر: <span style='color:#ff2a04;'>${total}</span>`;
-                renderGiftSection(afterDiscount);
+                // حساب الشحن حسب المحافظة
+                const gov = governorateInput.value.trim();
+                // المحافظات بسعر 85 جنيه
+                const gov85 = ['الشرقية','الغربية','المنوفية','القليوبية','البحيرة','بورسعيد','الإسماعيلية','السويس','كفر الشيخ'];
+                // المحافظات بسعر 99 جنيه
+                const gov99 = ['الأقصر','أسوان','الوادي الجديد','سوهاج','المنيا','أسيوط','شرم الشيخ','شمال سيناء','البحر الأحمر','قنا','مرسي مطروح','بني سويف','الفيوم','مرسي علم'];
+                if (gov === 'القاهرة') {
+                    shippingValue = 70;
+                    shippingText = ' (70 جنيه للشحن)';
+                } else if (gov === 'الجيزة') {
+                    shippingValue = 75;
+                    shippingText = ' (75 جنيه للشحن)';
+                } else if (gov85.includes(gov)) {
+                    shippingValue = 85;
+                    shippingText = ' (85 جنيه للشحن)';
+                } else if (gov99.includes(gov)) {
+                    shippingValue = 99;
+                    shippingText = ' (99 جنيه للشحن)';
+                } else if (gov && governorates.includes(gov)) {
+                    shippingValue = 85;
+                    shippingText = ' (85 جنيه للشحن)';
+                } else {
+                    shippingValue = 0;
+                    shippingText = '';
+                }
+                let finalTotal = afterDiscount + shippingValue;
+                if (discountValue > 0) {
+                    orderTotalBox.innerHTML = `الإجمالي بعد الخصم${shippingText}: <span style='color:#25d366;'>${finalTotal} </span> <del style='color:#ff4444;font-size:1rem;margin-right:8px;'>${total + shippingValue} </del>`;
+                } else {
+                    orderTotalBox.innerHTML = `ج.م إجمالي السعر${shippingText}: <span style='color:#ff2a04;'>${finalTotal}</span>`;
+                }
+                renderGiftSection(finalTotal);
             }
             updateOrderTotal();
+            governorateInput.addEventListener('input', updateOrderTotal);
             discountCodeInput.addEventListener('input', function() {
                 const code = this.value.trim().toUpperCase();
                 discountCodeMsg.style.display = 'none';
@@ -1675,11 +1745,31 @@
                 } else {
                     whatsappError.style.display = 'none';
                 }
+                // تحقق من اختيار المحافظة
+                const govVal = governorateInput.value.trim();
+                if (!govVal || !governorates.includes(govVal)) {
+                    governorateError.innerText = 'يرجى اختيار المحافظة من القائمة.';
+                    governorateError.style.display = 'block';
+                    governorateInput.focus();
+                    return;
+                } else {
+                    governorateError.style.display = 'none';
+                }
                 const fd = new FormData(this);
                 let total = cart.reduce((sum, item) => sum + (parseFloat(item.priceAfter) * (item.qty || 1)), 0);
                 let afterDiscount = Math.max(0, total - discountValue);
+                // حساب الشحن حسب المحافظة
+                let shipping = 0;
+                const gov85 = ['الشرقية','الغربية','المنوفية','القليوبية','البحيرة','بورسعيد','الإسماعيلية','السويس','كفر الشيخ'];
+                const gov99 = ['الأقصر','أسوان','الوادي الجديد','سوهاج','المنيا','أسيوط','شرم الشيخ','شمال سيناء','البحر الأحمر','قنا','مرسي مطروح','بني سويف','الفيوم','مرسي علم'];
+                if (govVal === 'القاهرة') shipping = 70;
+                else if (govVal === 'الجيزة') shipping = 75;
+                else if (gov85.includes(govVal)) shipping = 85;
+                else if (gov99.includes(govVal)) shipping = 99;
+                else if (governorates.includes(govVal)) shipping = 85;
+                let finalTotal = afterDiscount + shipping;
                 // تحقق من اختيار هدية إذا كان المجموع 1000 أو أكثر
-                if (afterDiscount >= 1000) {
+                if (finalTotal >= 1000) {
                     selectedGift = document.querySelector('input[name="gift"]:checked')?.value || '';
                     if (!selectedGift) {
                         document.getElementById('giftError').innerText = 'يرجى اختيار هدية.';
@@ -1695,8 +1785,10 @@
                     name: fd.get('name'),
                     whatsapp: fd.get('whatsapp'),
                     address: fd.get('address'),
+                    governorate: govVal,
                     items: cart.map(item => ({...item})),
-                    total: afterDiscount,
+                    total: finalTotal,
+                    shipping: shipping,
                     discountCode: discountCodeUsed || '',
                     discountValue: discountValue,
                     gift: selectedGift,
