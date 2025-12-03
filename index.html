@@ -1862,6 +1862,7 @@
                                 <th style='padding:10px 6px;border-bottom:2px solid #444;'>الاسم</th>
                                 <th style='padding:10px 6px;border-bottom:2px solid #444;'>رقم الواتساب</th>
                                 <th style='padding:10px 6px;border-bottom:2px solid #444;'>العنوان</th>
+                                <th style='padding:10px 6px;border-bottom:2px solid #444;'>المحافظة</th>
                                 <th style='padding:10px 6px;border-bottom:2px solid #444;'>المنتجات المطلوبة</th>
                                 <th style='padding:10px 6px;border-bottom:2px solid #444;'>كود الخصم</th>
                                 <th style='padding:10px 6px;border-bottom:2px solid #444;'>الإجمالي</th>
@@ -1887,6 +1888,7 @@
                             <td style='padding:8px 6px;'>${order.name}</td>
                             <td style='padding:8px 6px;'>${order.whatsapp}</td>
                             <td style='padding:8px 6px;'>${order.address}</td>
+                            <td style='padding:8px 6px;'>${order.governorate || ''}</td>
                             <td style='padding:8px 6px;'>${productsHtml}</td>
                             <td style='padding:8px 6px;'>${order.discountCode ? `${order.discountCode} ${order.discountValue ? `(${order.discountValue} جنيه)` : ''}` : ''}</td>
                             <td style='padding:8px 6px;color:#ffb300;font-weight:bold;'>${order.total} ج.م</td>
