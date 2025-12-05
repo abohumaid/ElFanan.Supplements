@@ -864,6 +864,14 @@
         }
         // --- تعديل عرض المنتجات لإرسال بيانات المنتج عند الضغط على الصورة ---
         function renderProductsSection(typeKey) {
+            // حفظ موضع الاسكرول لكل سكشن
+            if (!window.sectionScrollPositions) window.sectionScrollPositions = {};
+            // حفظ الموضع الحالي للسكشن السابق
+            if (window.currentSectionKey) {
+                window.sectionScrollPositions[window.currentSectionKey] = window.scrollY;
+            }
+            window.currentSectionKey = typeKey;
+
             const container = document.getElementById('mainContainer');
             const type = productTypes.find(t => t.key === typeKey);
             // المنتجات غير المخفية فقط + البحث
@@ -881,6 +889,7 @@
             if(filtered.length === 0) {
                 html += `<div style='text-align:center;'>No products in this section yet.</div>`;
                 container.innerHTML = html;
+                // عند عدم وجود منتجات، لا داعي لتغيير الاسكرول
                 return;
             }
             // --- عرض أول 4 منتجات فورًا ---
@@ -951,6 +960,14 @@
                 }
                 setTimeout(showNextBatch, 300);
             }
+            // استعادة موضع الاسكرول لهذا السكشن إذا كان محفوظًا
+            setTimeout(function() {
+                if (window.sectionScrollPositions && window.sectionScrollPositions[typeKey] !== undefined) {
+                    window.scrollTo({top: window.sectionScrollPositions[typeKey], behavior: 'auto'});
+                } else {
+                    window.scrollTo({top: 0, behavior: 'auto'});
+                }
+            }, 0);
         }
         // --- سلايدر الصور ---
         window.changeSlide = function(btn, filteredIdx, dir) {
