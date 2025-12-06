@@ -1788,13 +1788,7 @@
                 // تحقق من اختيار هدية إذا كان المجموع 1000 أو أكثر
                 if (finalTotal >= 1000) {
                     selectedGift = document.querySelector('input[name="gift"]:checked')?.value || '';
-                    if (!selectedGift) {
-                        document.getElementById('giftError').innerText = 'يرجى اختيار هدية.';
-                        document.getElementById('giftError').style.display = 'block';
-                        return;
-                    } else {
-                        document.getElementById('giftError').style.display = 'none';
-                    }
+                    document.getElementById('giftError').style.display = 'none';
                 } else {
                     selectedGift = '';
                 }
