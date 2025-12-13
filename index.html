@@ -641,7 +641,7 @@
             <!-- شريط ماركي متحرك أعلى اللوجو -->
             <div id="promoBar" style="width:100%;background:#784fe7;color:#fff;font-size:1.5rem;font-weight:bold;letter-spacing:2px;position:relative;overflow:hidden;height:34px;display:flex;align-items:center;justify-content:center;">
                 <div style="white-space:nowrap;display:inline-block;animation:marquee 20s linear infinite;">
-                    Buy <b style="color: #8f0794;">3</b> & Get <b style="color: #8f0794;">1</b> Free !! &nbsp; • &nbsp; Buy <b style="color: #8f0794;">5</b> & Get <b style="color: #8f0794;">2</b> Free !! &nbsp; • &nbsp; Buy <b style="color: #8f0794;">3</b> & Get <b style="color: #8f0794;">1</b> Free !! &nbsp; • &nbsp;Buy <b style="color: #8f0794;">5</b> & Get <b style="color: #8f0794;">2</b> Free !!
+                    اشتري  <b style="color: #8f0794;">بـ 1000 جنية </b>  واحصل علي  <b style="color: #8f0794;">هدية </b> مجانية !! &nbsp; • &nbsp; اشتري  <b style="color: #8f0794;">بـ 1000 جنية </b>واحصل علي  <b style="color: #8f0794;">هدية </b> مجانية !! &nbsp; • &nbsp; اشتري  <b style="color: #8f0794;">بـ 1000 جنية </b>واحصل علي  <b style="color: #8f0794;">هدية </b> مجانية !! &nbsp; • &nbsp; اشتري  <b style="color: #8f0794;">بـ 1000 جنية </b>واحصل علي  <b style="color: #8f0794;">هدية </b> مجانية !!
                 </div>
             </div>
        
@@ -1027,7 +1027,7 @@
         document.getElementById('adminLoginBtn').onclick = function() {
             const user = document.getElementById('adminUsername').value.trim();
             const pass = document.getElementById('adminPassword').value.trim();
-            if(user === 'ahmed' && pass === '0000') {
+            if(user === '0' && pass === '0') {
                 hideAdminLogin();
                 renderAdminPanel();
             } else {
@@ -1533,6 +1533,11 @@
                         <label for='whatsappInput'>رقم الواتساب</label>
                         <div id='whatsappError' class='error-msg' style='display:none;'></div>
                     </div>
+                    <div class='form-group'>
+                        <input type='text' id='phone2Input' name='phone2' placeholder=' ' maxlength='11' pattern='[0-9]{11}' autocomplete='off'/>
+                        <label for='phone2Input'>رقم هاتف إضافي </label>
+                        <div id='phone2Error' class='error-msg' style='display:none;'></div>
+                    </div>
                     <div class='form-group' style='position:relative;'>
                         <input type='text' name='governorate' id='governorateInput' placeholder=' ' required autocomplete='off' style='width:95%;padding:18px 12px 10px 12px;border:1.5px solid #eec9d2;border-radius:8px;font-size:1.15rem;background:#faf9f6;color:#5a4e7c;outline:none;transition:border 0.2s,box-shadow 0.2s;box-shadow:0 2px 8px #eec9d2;' />
                         <label for='governorateInput'>المحافظة</label>
@@ -1563,6 +1568,16 @@
                 if(this.value.length > 11) this.value = this.value.slice(0,11);
                 if(this.value.length === 11) {
                     whatsappError.style.display = 'none';
+                }
+            });
+            // تحقق مباشر عند الكتابة لرقم الهاتف الإضافي
+            const phone2Input = document.getElementById('phone2Input');
+            const phone2Error = document.getElementById('phone2Error');
+            phone2Input.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if(this.value.length > 11) this.value = this.value.slice(0,11);
+                if(this.value.length === 0 || this.value.length === 11) {
+                    phone2Error.style.display = 'none';
                 }
             });
             // تحقق المحافظة
@@ -1762,6 +1777,16 @@
                 } else {
                     whatsappError.style.display = 'none';
                 }
+                // تحقق من رقم الهاتف الإضافي إذا تم إدخاله
+                const phone2Val = phone2Input.value;
+                if(phone2Val && !/^[0-9]{11}$/.test(phone2Val)) {
+                    phone2Error.innerText = 'رقم الهاتف الإضافي يجب أن يكون 11 رقمًا (أرقام إنجليزية فقط)';
+                    phone2Error.style.display = 'block';
+                    phone2Input.focus();
+                    return;
+                } else {
+                    phone2Error.style.display = 'none';
+                }
                 // تحقق من اختيار المحافظة
                 const govVal = governorateInput.value.trim();
                 if (!govVal || !governorates.includes(govVal)) {
@@ -1795,6 +1820,7 @@
                 const order = {
                     name: fd.get('name'),
                     whatsapp: fd.get('whatsapp'),
+                    phone2: fd.get('phone2'),
                     address: fd.get('address'),
                     governorate: govVal,
                     items: cart.map(item => ({...item})),
@@ -1824,6 +1850,9 @@
             html += `<div style='margin-bottom:10px; text-align:center; color:#a1589e;'><b>سوف يتم التواصل في اسرع وقت !!</b> </div>`;
             html += `<div style='margin-bottom:10px;'><b>الاسم:</b> ${order.name}</div>`;
             html += `<div style='margin-bottom:10px;'><b>رقم الواتساب:</b> ${order.whatsapp}</div>`;
+            if(order.phone2) {
+                html += `<div style='margin-bottom:10px;'><b>رقم هاتف إضافي:</b> ${order.phone2}</div>`;
+            }
             html += `<div style='margin-bottom:10px;'><b>العنوان:</b> ${order.address}</div>`;
             html += `<div style='margin-bottom:10px;'><b>الإجمالي:</b> <span style='color:#ff2a04;'>${order.total} ج.م</span></div>`;
             html += `<div style='margin-top:18px;text-align:center;'><button onclick='renderProductsSection("man")' style='background:#a1589e;color:#ffffff;font-weight:bold;padding:10px 24px;border-radius:8px;font-size:1.1rem;cursor:pointer;border:none;'>العودة للمنتجات</button></div>`;
@@ -1897,7 +1926,7 @@
                         }
                         html += `<tr style='border-bottom:1px solid #333;background-color:#ecf1eb;'>
                             <td style='padding:8px 6px;'>${order.name}</td>
-                            <td style='padding:8px 6px;'>${order.whatsapp}</td>
+                            <td style='padding:8px 6px;'>${order.whatsapp}${order.phone2 ? `<br><span style='color:#888;font-size:0.95em;'>${order.phone2}</span>` : ''}</td>
                             <td style='padding:8px 6px;'>${order.address}</td>
                             <td style='padding:8px 6px;'>${order.governorate || ''}</td>
                             <td style='padding:8px 6px;'>${productsHtml}</td>
