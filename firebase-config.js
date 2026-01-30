@@ -1,6 +1,6 @@
 // --- Firebase config ---
 const firebaseConfig = {
-    apiKey: "AIzaSyABBNyziST2TOTr1YQv7nEAq_V1LVoymo0",
+    apiKey: "AIzaSyABBNyziST2TOTr1YQv7nEAq_V1LVoymo0ahmed",
     authDomain: "abo-elela.firebaseapp.com",
     databaseURL: "https://abo-elela-default-rtdb.firebaseio.com",
     projectId: "abo-elela",
@@ -12,4 +12,5 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 if (firebase.analytics) firebase.analytics();
 const db = firebase.database();
+
 
